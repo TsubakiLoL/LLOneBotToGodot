@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://jshaqneakmh8"]
+
+[ext_resource type="Script" path="res://addons/LLOneBotAPI/http/request.gd" id="1_6nqkr"]
+
+[node name="Request" type="HTTPRequest"]
+script = ExtResource("1_6nqkr")
+
+[connection signal="request_completed" from="." to="." method="_on_request_completed"]

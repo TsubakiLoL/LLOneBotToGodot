@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://copumgjsrngxq"]
+
+[ext_resource type="Script" path="res://addons/LLOneBotAPI/ws/one_ws.gd" id="1_bnecr"]
+
+[node name="OneWs" type="Node"]
+script = ExtResource("1_bnecr")
+
+[node name="heart_beat_timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="heart_beat_timer" to="." method="_on_heart_beat_timer_timeout"]
