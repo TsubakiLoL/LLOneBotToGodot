@@ -1,6 +1,6 @@
 extends Node
 @onready var http_request: HTTPRequest = $HTTPRequest
-const REQUEST = preload("res://addons/onebotapi/http/request.tscn")
+const REQUEST = preload("res://addons/LLOneBotAPI/http/request.tscn")
 var data={
 	"group_id":"392470456",
 	"message":{
