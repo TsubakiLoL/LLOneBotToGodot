@@ -1,22 +1,22 @@
 extends Node
-@onready var http_request: HTTPRequest = $HTTPRequest
 const REQUEST = preload("res://addons/LLOneBotAPI/http/request.tscn")
-var data={
-	"group_id":"392470456",
-	"message":{
-		"type":"text",
-		"data":{
-			"text":"这是一条测试消息"
-		}
-		
-	}
-}
+
 @onready var one_ws: Node = $OneWs
-@export var url:String="http://localhost":
-	set(val):
-		
-		pass
+@export var url:String="http://localhost"
 @export var port:int=3000
+@export var ws_url:String="http://localhost":
+	set(val):
+		ws_url=val
+		one_ws.connect_address=val
+@export var ws_port:int=3002:
+	set(val):
+		port=val
+		one_ws.port=port
+		
+signal ws_connected
+
+signal  ws_closed
+
 ##异步request
 func request(url:String,data):
 	var new_http:LLOneBotRequest=REQUEST.instantiate()
@@ -157,12 +157,16 @@ func get_group_msg_history(group_id:String,message_seq:String=""):
 		mes["message_seq"]=message_seq
 	return await send_origin_msg("get_group_msg_history",mes)
 	pass
+
+const CONFIG = preload("res://addons/LLOneBotAPI/config/config.json")
 func _ready() -> void:
-	
-	#http_request.request("http://localhost:3000/send_group_msg",[],HTTPClient.METHOD_POST,JSON.stringify(data))
-	one_ws.open_as_client()
+	url=CONFIG.data["HTTP地址"]
+	port=CONFIG.data["HTTP端口"]
+	ws_url=CONFIG.data["正向Websocket地址"]
+	ws_port=CONFIG.data["正向Websocket端口"]
 	pass
-	
+func open():
+	one_ws.open()
 
 func _on_one_ws_message_get(mes: String) -> void:
 	print("get_mes:\n"+mes)
@@ -171,10 +175,11 @@ func _on_one_ws_message_get(mes: String) -> void:
 
 func _on_one_ws_connected() -> void:
 	print("connected")
-	print(await get_group_msg_history("392470456"))
+	ws_connected.emit()
 	pass # Replace with function body.
 
 
 func _on_one_ws_closed() -> void:
 	print("closed")
+	ws_closed.emit()
 	pass # Replace with function body.

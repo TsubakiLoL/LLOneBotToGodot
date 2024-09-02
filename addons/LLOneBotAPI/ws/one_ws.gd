@@ -57,13 +57,17 @@ func _process(delta: float) -> void:
 		before_ws_state=state
 		pass
 
-func open_as_client():
+func open():
 	heart_beat_timer.wait_time=heart_beat_time
 	ws_client=WebSocketPeer.new()
 	ws_client.connect_to_url(connect_address+":"+str(port))
 	set_process(true)
 	pass
-	
+func close():
+	heart_beat_timer.stop()
+	ws_client.close()
+	ws_client=null
+	set_process(false)
 func is_str_heart_beat(str:String)->bool:
 	var json=JSON.parse_string(str)
 	if not json is Dictionary:

@@ -6,6 +6,8 @@
 [node name="OneBot" type="Node"]
 script = ExtResource("1_r6hr6")
 
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
 [node name="OneWs" parent="." instance=ExtResource("2_si4yc")]
 
 [connection signal="closed" from="OneWs" to="." method="_on_one_ws_closed"]
