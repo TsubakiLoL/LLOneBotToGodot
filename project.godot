@@ -13,3 +13,11 @@ config_version=5
 config/name="one_bot_api"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+LlOneBot="*res://addons/LLOneBotAPI/autoload/OneBot.tscn"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/LLOneBotAPI/plugin.cfg")

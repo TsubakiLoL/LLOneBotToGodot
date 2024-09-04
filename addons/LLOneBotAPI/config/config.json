@@ -1,1 +1,1 @@
-{"HTTP地址":"127.0.0.1","HTTP端口":3000,"正向Websocket地址":"127.0.0.1","正向Websocket端口":3002}
+{"HTTP地址":"http://localhost","HTTP端口":3000,"正向Websocket地址":"ws://localhost","正向Websocket端口":3001}

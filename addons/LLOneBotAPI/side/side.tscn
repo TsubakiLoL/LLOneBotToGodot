@@ -26,9 +26,15 @@ layout_mode = 2
 size_flags_horizontal = 0
 text = "恢复默认"
 
+[node name="installl" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "尝试为QQ安装插件"
+
 [node name="add" type="VBoxContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 0
 
 [connection signal="pressed" from="HBoxContainer/refresh" to="." method="_on_refresh_pressed"]
 [connection signal="pressed" from="HBoxContainer/default" to="." method="_on_default_pressed"]
+[connection signal="pressed" from="HBoxContainer/installl" to="." method="_on_installl_pressed"]

@@ -10,8 +10,8 @@ const REQUEST = preload("res://addons/LLOneBotAPI/http/request.tscn")
 		one_ws.connect_address=val
 @export var ws_port:int=3002:
 	set(val):
-		port=val
-		one_ws.port=port
+		ws_port=val
+		one_ws.port=ws_port
 		
 signal ws_connected
 
@@ -19,6 +19,7 @@ signal  ws_closed
 
 ##异步request
 func request(url:String,data):
+	print(url)
 	var new_http:LLOneBotRequest=REQUEST.instantiate()
 	add_child(new_http)
 	new_http.request(url,[],HTTPClient.METHOD_POST,JSON.stringify(data))
@@ -30,7 +31,7 @@ func request(url:String,data):
 		var str=new_http.body.get_string_from_utf8()
 		new_http.queue_free()
 		if str!="":
-			
+			print(str)
 			return JSON.parse_string(str)
 		else:
 			return null
@@ -42,19 +43,19 @@ func send_origin_msg(api:String,data:Dictionary):
 #发送群组消息
 #响应数据:
 #message_id	int32	消息 ID
-func send_group_msg(group_id:String,message:Dictionary):
+func send_group_msg(group_id:String,message:LLOneBotMsg):
 	var mes={
 	"group_id":group_id,
-	"message":message
+	"message":message.contain_data
 	}
 	return await send_origin_msg("send_group_msg",mes)
 #发送私聊消息
 #响应数据:
 #message_id	int32	消息 ID
-func send_private_msg(user_id:String,message:Dictionary):
+func send_private_msg(user_id:String,message:LLOneBotMsg):
 	var mes={
 	"user_id":user_id,
-	"message":message
+	"message":message.contain_data
 	}
 	return await send_origin_msg("send_private_msg",mes)
 	pass
@@ -164,18 +165,59 @@ func _ready() -> void:
 	port=CONFIG.data["HTTP端口"]
 	ws_url=CONFIG.data["正向Websocket地址"]
 	ws_port=CONFIG.data["正向Websocket端口"]
+	print(port)
+	open()
 	pass
 func open():
 	one_ws.open()
-
+func post_mes(mes:String):
+	var json=JSON.parse_string(mes)
+	if json==null:
+		return
+		
+	if json is Dictionary and json.has("type") and json.has("message"):
+		
+		
+		var type=json["type"]
+		var message_arr=[]
+		if json["message"] is Dictionary:
+			message_arr.append(json["message"])
+		elif json["message"] is Array:
+			for i in json["message"]:
+				
+				
+				pass
+			
+			pass
+		match type:
+				
+				
+			_:
+				
+				pass
+				
+				pass
+		
+		pass
+	pass
 func _on_one_ws_message_get(mes: String) -> void:
 	print("get_mes:\n"+mes)
+	
+	
 	pass # Replace with function body.
 
 
 func _on_one_ws_connected() -> void:
 	print("connected")
 	ws_connected.emit()
+	#send_private_msg("3572790646",{
+		#"type":"text",
+		#"data":{
+			#"text":"这是一条来自Godot发送的消息"
+		#}
+	#})
+	await get_tree().create_timer(1).timeout
+	send_group_msg("392470456",LLOneBotMsg.create_text_msg("这是一条测试消息"))
 	pass # Replace with function body.
 
 
